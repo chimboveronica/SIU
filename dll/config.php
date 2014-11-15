@@ -1,7 +1,5 @@
 <?php
 
-
-
 function getConectionDb() {
     /* DATOS DE MI SERVIDOR */
 //    $db_name = "kbusdb";
@@ -9,7 +7,7 @@ function getConectionDb() {
 //    $db_user = "chimboveronica";
 //    $db_password = "chimboveronicades2";
 
-    $db_name = "irbudata";
+    $db_name = "siudb";
     $db_host = "localhost";
     $db_user = "root";
     $db_password = "";
@@ -19,7 +17,7 @@ function getConectionDb() {
 }
 
 function getEncryption($text) {
-    $salt = "KR@D@C";
+    $salt = "SIU";
     $encriptClave = md5(md5(md5($text) . md5($salt)));
     return $encriptClave;
 }
