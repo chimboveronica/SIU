@@ -50,7 +50,7 @@ Ext.onReady(function () {
         items: [{
                 layout: 'hbox',
                 bodyStyle: {
-                    background: '#5e96db'
+                    background: 'black'
                 }, style: {
                     borderStyle: 'solid',
                     borderBottomColor: '#FFBF00'
@@ -59,7 +59,7 @@ Ext.onReady(function () {
                     {
                         padding: '10 2 2 60',
                         xtype: 'label',
-                        html: '<div id="encabezado"><p>SIU</p>'
+                        html: '<div id="encabezado"><p>SISTEMA DE INFORMACIÓN DEL USUARIO</p>'
                     }
                 ]
             }
@@ -120,14 +120,15 @@ Ext.onReady(function () {
             borderColor: '#003F72',
             borderStyle: 'solid'
 
-        }, html: '<section class="rw-wrapper">' +
-                '<h2 class="rw-sentence">' +
-                '<br/>' +
-                '<div class="rw-words rw-words-2">' +
-                '<span>ADMINISTRACION DE SIU</span>' +
-                '</div>' +
-                '</h2>' +
-                '</section>'
+        }, html: '<div id="wrapper">' +
+                '<div id="myScroll">' +
+                '<div class="scrollAviso" >2) ¿Cómo se dice guerra en turco? Balaban balabienen.</div>' +
+                '<div class="scrollAviso" >3) ¿Como se dice "creo que estoy embarazada" en africano? Bombo supongo</div>' +
+                '<div class="scrollAviso" >4) ¿Cómo se dice doctor en japonés? Utikuru utimato.</div>' +
+                ' <div class="scrollAviso" >5) ¿Cómo se dice en árabe "chica súbete a mi moto"? Maja sube la almeja a la Yamaha.</div>' +
+                '<div class="scrollAviso" >6) ¿Cómo se dice bochito en chino? Cachinoquepo.</div>'
+                + '</div>' +
+                '</div>'
     });
     var panelCentral = Ext.create('Ext.form.Panel', {
         region: 'center',
@@ -145,6 +146,42 @@ Ext.onReady(function () {
         items: [
             panelMenu, panelCentral, panelSur]
     });
-
 });
 
+$(function () {
+    $("#myScroll").mbScrollable({
+        width: 1400,
+        elementsInPage: 1,
+        elementMargin: 2,
+        shadow: "#999 2px 2px 2px",
+        height: "auto",
+        controls: "#controls",
+        slideTimer: 22000,
+        autoscroll: true,
+        scrollTimer: 0,
+        changePageCallback: function () {
+            var positiondisplay = $('#myScroll').get(0).idx + '/' + $('#myScroll').get(0).totalPages;
+            $('#controls .positiondisplay').html(positiondisplay);
+        },
+        loadCallback: function () {
+            var positiondisplay = $('#myScroll').get(0).idx + '/' + $('#myScroll').get(0).totalPages;
+            $('#controls .positiondisplay').html(positiondisplay);
+        }
+    });
+
+    $("#myScroll1").mbScrollable({
+        dir: "vertical",
+        width: 140,
+        height: 400,
+        elementsInPage: 3,
+        elementMargin: 6,
+        shadow: "#999 2px 2px 2px",
+        controls: "#controls1",
+        slideTimer: 600,
+        autoscroll: false,
+        scrollTimer: 6000
+    });
+    setTimeout(function () {
+        $("#wrapper").fadeIn();
+    }, 2000);
+});
