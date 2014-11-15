@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 var panelSouth;
-
+var msgForNormal;
 var required = '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>';
 Ext.Loader.setConfig({
     enabled: true
@@ -40,7 +40,7 @@ var spot = Ext.create('Ext.ux.Spotlight', {
 
 Ext.onReady(function () {
     Ext.tip.QuickTipManager.init();
-
+    arregloAviso();
 
     //Panel para Web
     var panelMenu = Ext.create('Ext.form.Panel', {
@@ -136,14 +136,13 @@ Ext.onReady(function () {
             borderColor: '#003F72',
             borderStyle: 'solid'
 
-        }, html:
-                '<section class="rw-wrapper">' +
-                '<h2 class="rw-sentence">' +
-                '<br/>' +
-                '<div class="rw-words rw-words-2">' +
-                '<span>ADMINISTRACION DE SIU</span>' + '</div>' +
-                '</h2>' +
-                '</section>'
+        }, 
+        html:
+                '<div class="carrusel">' +
+                '<ul class="bloque-imagenes">' +
+                msgForNormal +
+                '</ul>' +
+                '</div>'
     });
     var panelCentral = Ext.create('Ext.form.Panel', {
         region: 'center',
@@ -162,3 +161,14 @@ Ext.onReady(function () {
             panelMenu, panelCentral, panelSur]
     });
 });
+
+function arregloAviso() {
+    var dato = ['Chiva novembrina visita hoy barrios Geranios, Sol de los Andes,Capulí Loma y Lote Bonito desde las 18H30', '  Les invitamos a participar del pregón de festividades por los 194 años de independencia y 466 años de fundación de Loja, este viernes 14 de noviembre.', 'En el parque Simón Bolívar, se desarrolla la presentación de titeres, que esta dirigida a los niños y niñas de las diferentes escuelas de la ciudad'];
+    msgForNormal = '';
+    for (var i = 0; i < dato.length; i++) {
+        msgForNormal = msgForNormal + '<li>' + dato[i] + '</li>';
+    }
+
+}
+
+
