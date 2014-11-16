@@ -14,13 +14,17 @@
         <script type="text/javascript" src="extjs-docs-5.0.0/extjs-build/build/examples/shared/examples.js"></script>
         <link rel="stylesheet" type="text/css" href="extjs-docs-5.0.0/extjs-build/build/packages/ext-theme-access/build/resources/ext-theme-access-all.css">
         <script type="text/javascript" src="js/Video.js"></script>
+
         <link rel="stylesheet" type="text/css" href="css/style.css">
+        <script type="text/javascript" src="extjs-docs-5.0.0/extjs-build/build/packages/ext-charts/build/ext-charts.js"></script>
         <script type="text/javascript" src="js/admin.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script type="text/javascript" src="js/estilos/funciones.js"></script>
-        <script type="text/javascript" src="js/estilos/jquery.js"></script>
-        <link rel="stylesheet" type="text/css" href="css/style2.css" />		
+
+        <link rel="stylesheet" type="text/css" href="css/style2.css" />	
+
     </head>
-    <body oncontextmenu = "return false">        
+    <body>        
         <header></header>
         <nav></nav>
         <footer></footer>

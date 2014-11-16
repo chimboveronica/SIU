@@ -45,6 +45,11 @@ Ext.onReady(function () {
     //Panel para Web
     var panelMenu = Ext.create('Ext.form.Panel', {
         region: 'north',
+        style: {
+            borderColor: '#003F72',
+            borderStyle: 'solid'
+
+        },
         deferreRender: false,
         activeTab: 0,
         items: [{
@@ -101,7 +106,13 @@ Ext.onReady(function () {
         title: 'Registros de Buses',
     });
     var formVideo = Ext.create('Ext.form.Panel', {
+        region: 'center',
         height: '100%',
+        style: {
+            borderColor: '#003F72',
+            borderStyle: 'solid'
+
+        },
         padding: '10 10 10 10',
         items: [{
                 xtype: 'video',
@@ -113,22 +124,13 @@ Ext.onReady(function () {
 //                     { src: 'videos/noviembre_15_2014.mp4', type: 'video/quicktime' }
                 ],
                 //poster: 'http://b.vimeocdn.com/ts/148/397/148397103_640.jpg',
-//                poster: 'img/k-taxy.png',
+                poster: 'img/logo.png',
                 autobuffer: true,
                 autoplay: true,
                 controls: true
             }]
     });
-    var panelCentro = Ext.create('Ext.panel.Panel', {
-        region: 'center',
-        height: '100%',
-        padding: '10 10 10 10',
-        style: {
-            borderColor: '#003F72',
-            borderStyle: 'solid'
 
-        }, items: [formVideo]
-    });
     var panelSur = Ext.create('Ext.panel.Panel', {
         region: 'south',
         height: '20%',
@@ -136,7 +138,7 @@ Ext.onReady(function () {
             borderColor: '#003F72',
             borderStyle: 'solid'
 
-        }, 
+        },
         html:
                 '<div class="carrusel">' +
                 '<ul class="bloque-imagenes">' +
@@ -148,7 +150,7 @@ Ext.onReady(function () {
         region: 'center',
         layout: 'border',
         items: [
-            panelCentro, grid
+            formVideo, grid
         ]
     });
 
@@ -163,7 +165,7 @@ Ext.onReady(function () {
 });
 
 function arregloAviso() {
-    var dato = ['Chiva novembrina visita hoy barrios Geranios, Sol de los Andes,Capulí Loma y Lote Bonito desde las 18H30', '  Les invitamos a participar del pregón de festividades por los 194 años de independencia y 466 años de fundación de Loja, este viernes 14 de noviembre.', 'En el parque Simón Bolívar, se desarrolla la presentación de titeres, que esta dirigida a los niños y niñas de las diferentes escuelas de la ciudad'];
+    var dato = ['</t>Chiva novembrina visita hoy barrios Geranios, Sol de los Andes,Capulí Loma y Lote Bonito desde las 18H30', '</t> Les invitamos a participar del pregón de festividades por los 194 años de independencia y 466 años de fundación de Loja, este viernes 14 de noviembre.', 'En el parque Simón Bolívar, se desarrolla la presentación de titeres, que esta dirigida a los niños y niñas de las diferentes escuelas de la ciudad'];
     msgForNormal = '';
     for (var i = 0; i < dato.length; i++) {
         msgForNormal = msgForNormal + '<li>' + dato[i] + '</li>';
