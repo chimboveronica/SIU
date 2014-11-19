@@ -36,20 +36,12 @@ var spot = Ext.create('Ext.ux.Spotlight', {
     easing: 'easeOut',
     duration: 500
 });
-
-
 Ext.onReady(function () {
     Ext.tip.QuickTipManager.init();
     arregloAviso();
-
     //Panel para Web
     var panelMenu = Ext.create('Ext.form.Panel', {
         region: 'north',
-        style: {
-            borderColor: '#003F72',
-            borderStyle: 'solid'
-
-        },
         deferreRender: false,
         activeTab: 0,
         items: [{
@@ -57,88 +49,214 @@ Ext.onReady(function () {
                 bodyStyle: {
                     background: 'black'
                 },
-//                style: {
-//                    borderStyle: 'solid',
-//                    borderBottomColor: '#FFBF00'
-//                },
                 items: [
                     {
-                        padding: '10 2 2 60',
+                        padding: '10 10 10 10',
+                        height: 60,
                         xtype: 'label',
-                        html: '<img src="img/logo.png" width="250" height="80"><div id="encabezado"><p>SISTEMA DE INFORMACIÓN DEL USUARIO</p>'
+                        html: '<div id="encabezado"><p>SISTEMA DE INFORMACIÓN DEL USUARIO</p><br>'
+                    }
+                ]
+            },
+            {
+                layout: 'hbox',
+                bodyStyle: {
+                    background: '#006dcc'
+                },
+                items: [
+                    {
+                        padding: '10 2 10 20',
+                        xtype: 'label',
+                        html: '<div id="encabezado"><p><b>PARADA:</b> Sauces Norte - Argelia</p>'
+
                     }
                 ]
             }
         ]
     }
     );
-    var storeBuses = Ext.create('Ext.data.JsonStore', {
+    var storeVideos = Ext.create('Ext.data.JsonStore', {
         autoLoad: true,
         proxy: {
             type: 'ajax',
-            url: 'php/getbuses.php',
+            url: 'php/getvideos.php',
             reader: {
                 type: 'json',
                 root: 'data'
             }
         },
-        fields: ['id', 'ruta', 'tiempoLllegada', 'tiempoRestante', 'regMunicipal']
+        fields: ['id', 'orden', 'video']
     });
-
     var grid = Ext.create('Ext.grid.Panel', {
-        store: storeBuses,
-        style: {
-            borderColor: '#003F72',
-            borderStyle: 'solid'
-
-        },
+        height: '50%',
+        margins: '5 5 5 5',
+        bodyStyle: 'padding: 10px; background-color: #DFE8F6',
+        store: storeVideos,
+//        style: {
+//            bborderColor: '#cecece',
+//            borderStyle: 'solid',
+//            borderTopWidth: '10px',
+//            borderRightWidth: '10px',
+//            borderBottomWidth: '10px',
+//            borderLeftWidth: '10px'
+//        },
         columns: [
-            Ext.create('Ext.grid.RowNumberer', {text: 'Nº', width: 30, align: 'center'}),
-            {header: "<b>Registro Municipal</b>", width: 150, align: 'center', sortable: true, dataIndex: 'regMunicipal', filter: {type: 'string'}},
-            {header: "<b>Ruta</b>", align: 'center', width: 180, sortable: true, dataIndex: 'ruta', filter: {type: 'string'}},
-            {header: "<b>Tiempo llegada</b>", width: 130, sortable: true, align: 'center', dataIndex: 'tiempoLlegada', format: 'H:i:s', },
-            {header: "<b>Tiempo Restante</b>", width: 150, sortable: true, align: 'center', dataIndex: 'tiempoRestante', format: 'H:i:s'},
+            {header: "<b>Orden</b>", align: 'center', width: 90, sortable: true, dataIndex: 'orden'},
+            {header: "<b>Video</b>", width: 250, align: 'center', sortable: true, dataIndex: 'video', filter: {type: 'string'}},
         ],
         stripeRows: true,
-        width: '50%',
-        margins: '0 2 0 0',
+        width: '30%',
         region: 'west',
-        title: 'Registros de Buses',
+        title: 'Registro de Videos',
     });
     var formVideo = Ext.create('Ext.form.Panel', {
         region: 'center',
-        height: '100%',
+        width: '30%',
+        title: 'Administración de Videos',
+        bodyStyle: 'padding: 10px; background-color: #DFE8F6',
         style: {
-            borderColor: '#003F72',
-            borderStyle: 'solid'
-
+            borderColor: '#cecece',
+            borderStyle: 'solid',
+            borderTopWidth: '5px',
+            borderRightWidth: '10px',
+            borderBottomWidth: '5px',
+            borderLeftWidth: '10px'
         },
-        padding: '10 10 10 10',
-        items: [{
-                xtype: 'video',
-                src: [
-                    // browser will pick the format it likes most:
-                    {src: 'videos/noviembre_15_2014.mp4', type: 'video/mp4'},
-//                    { src: 'videos/noviembre_15_2014.mp4', type: 'video/mp4' },
-//                     { src: 'videos/noviembre_15_2014.mp4', type: 'video/ogg' },
-//                     { src: 'videos/noviembre_15_2014.mp4', type: 'video/quicktime' }
-                ],
-                //poster: 'http://b.vimeocdn.com/ts/148/397/148397103_640.jpg',
-                poster: 'img/logo.png',
-                autobuffer: true,
-                autoplay: true,
-                controls: true
+        items: [
+            {
+                fieldLabel: 'Img',
+                xtype: 'textfield',
+                name: 'imagePerson',
+                id: 'imagePerson',
+                hidden: true
+            },
+            {
+                xtype: 'form',
+                layout: 'anchor',
+                margin: '10 10 10 10',
+                items: [
+                    {
+                        xtype: 'filefield',
+                        name: 'imageFile',
+                        emptyText: "Máximo 2Minutos",
+                        labelSeparator: '',
+                        fieldLabel: '<div id="camposForm">Video:</div>',
+                        width: 250,
+                        buttonConfig: {
+                            iconCls: 'icon-upload',
+                            text: '',
+                            tooltip: '<div id="tooltip">Escoger video</div>'
+                        },
+                        listeners: {
+                            change: function (thisObj, value, eOpts) {
+                                var form = this.up('form').getForm();
+                                form.submit({
+                                    url: 'php/upload/uploadVideo.php',
+                                    success: function (form, action) {
+                                        formVideo.down('[name=labelImage]').setSrc('img/usuario/' + action.result['img']);
+                                        formVideo.down('[name=imagePerson]').setValue('img/usuario/' + action.result['img']);
+//                                        console.log(action.result['img']);
+//                                        thisObj.setValue(action.result['img']);
+                                    },
+                                    failure: function (form, action) {
+                                        Ext.Msg.alert('Error', 'No se pudo subir la imagen');
+                                    }
+                                });
+                            }
+                        }
+                    }
+
+                ]
+            }],
+        dockedItems: [{
+                xtype: 'toolbar',
+                dock: 'bottom',
+                ui: 'footer',
+                items: ['->',
+                    {style: {
+                            background: '#006dcc'
+                        }, iconCls: 'icon-updat', itemId: 'update', text: '<div id="botonesMenuForm">Actualizar</div>', scope: this, tooltip: '<div id="tooltip">Actualizar Datos</div>'},
+                    {style: {
+                            background: '#006dcc'
+                        }, iconCls: 'icon-add', itemId: 'create', text: '<div id="botonesMenuForm">Crear</div>', scope: this, tooltip: '<div id="tooltip">Crear Persona</div>', },
+                    {style: {
+                            background: '#006dcc'
+                        }, iconCls: 'icon-reset', itemId: 'delete', scope: this, tooltip: '<div id="tooltip">Eliminar Persona</div>', },
+                    {style: {
+                            background: '#006dcc'
+                        }, iconCls: 'limpiar', tooltip: '<div id="tooltip">Limpiar Campos</div>', scope: this, },
+                    {style: {
+                            background: '#006dcc'
+                        }}
+                ]
+            }
+
+        ]
+    });
+    var formMensaje = Ext.create('Ext.form.Panel', {
+        region: 'east',
+        title: 'Administración de Mensaje',
+        width: '40%',
+        style: {
+            borderColor: '#cecece',
+            borderStyle: 'solid',
+            borderTopWidth: '5px',
+            borderRightWidth: '10px',
+            borderBottomWidth: '5px',
+            borderLeftWidth: '10px'
+        },
+        bodyStyle: 'padding: 10px; background-color: #DFE8F6',
+//        margins: '0 0 0 3',
+        defaultType: 'textfield',
+        layout: 'anchor',
+        fieldDefaults: {
+            msgTarget: 'side'
+        },
+        defaults: {
+            anchor: '90%'
+        },
+        items: [
+            {
+                xtype: 'textarea',
+                fieldLabel: 'Mensaje',
+                name: 'mensaje',
+                labelWidth: 95,
+                height: 200,
+                vtype: 'campos',
+                emptyText: 'Ingresar Mensaje...'
+            }
+        ],
+        dockedItems: [{
+                xtype: 'toolbar',
+                dock: 'bottom',
+                ui: 'footer',
+                items: ['->', {
+                        style: {
+                            background: '#006dcc'
+                        },
+                        iconCls: 'icon-update',
+                        itemId: 'update',
+                        text: 'Actualizar',
+                        disabled: true,
+                        tooltip: 'Actualizar',
+                    }]
             }]
     });
-
     var panelSur = Ext.create('Ext.panel.Panel', {
         region: 'south',
         height: '20%',
-        style: {
-            borderColor: '#003F72',
-            borderStyle: 'solid'
-
+        bodyStyle: {
+            background: 'white'
         },
+        style: {
+            borderColor: '#cecece',
+            borderStyle: 'solid',
+            borderTopWidth: '10px',
+            borderRightWidth: '10px',
+            borderBottomWidth: '10px',
+            borderLeftWidth: '10px'
+        },
+        margins: '10 10 10 10',
         html:
                 '<div class="carrusel">' +
                 '<ul class="bloque-imagenes">' +
@@ -150,20 +268,18 @@ Ext.onReady(function () {
         region: 'center',
         layout: 'border',
         items: [
-            formVideo, grid
+            formVideo, grid, formMensaje
         ]
     });
-
     Ext.create('Ext.container.Viewport', {
         layout: 'border',
         style: {
-            background: '#FFBF00'
+            background: '#cecece'
         },
         items: [
             panelMenu, panelCentral, panelSur]
     });
 });
-
 function arregloAviso() {
     var dato = ['</t>Chiva novembrina visita hoy barrios Geranios, Sol de los Andes,Capulí Loma y Lote Bonito desde las 18H30', '</t> Les invitamos a participar del pregón de festividades por los 194 años de independencia y 466 años de fundación de Loja, este viernes 14 de noviembre.', 'En el parque Simón Bolívar, se desarrolla la presentación de titeres, que esta dirigida a los niños y niñas de las diferentes escuelas de la ciudad'];
     msgForNormal = '';
@@ -172,5 +288,11 @@ function arregloAviso() {
     }
 
 }
+function arregloVideos() {
+    var dato = ['</t>Chiva novembrina visita hoy barrios Geranios, Sol de los Andes,Capulí Loma y Lote Bonito desde las 18H30', '</t> Les invitamos a participar del pregón de festividades por los 194 años de independencia y 466 años de fundación de Loja, este viernes 14 de noviembre.', 'En el parque Simón Bolívar, se desarrolla la presentación de titeres, que esta dirigida a los niños y niñas de las diferentes escuelas de la ciudad'];
+    msgForNormal = '';
+    for (var i = 0; i < dato.length; i++) {
+        msgForNormal = msgForNormal + '<li>' + dato[i] + '</li>';
+    }
 
-
+}

@@ -17,7 +17,7 @@ function getConectionDb() {
 }
 
 function getEncryption($text) {
-    $salt = "SIU";
+    $salt = "KR@D@C";
     $encriptClave = md5(md5(md5($text) . md5($salt)));
     return $encriptClave;
 }

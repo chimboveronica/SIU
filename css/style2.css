@@ -1,5 +1,5 @@
 .carrusel{
-    height:80px;
+    height:100px;
     overflow:hidden;
     width:3000px;
 }
@@ -12,11 +12,12 @@
 
 .bloque-imagenes li{
     list-style:none;
-    margin-top:20px;
+    margin-top:50px;
+    margin-bottom: 10px;
     font-family: arial;
-    font-size:30px;
-    color: white;
-    margin-bottom:10px;
+    font-style: inherit;
+    font-size:60px;
+    color: #5e6986;
     display:inline;
     float:left;
 

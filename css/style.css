@@ -117,8 +117,8 @@ header, section, footer, aside, nav, article, figure {
     background: #FFBF00
 }
 body{
-    background-color:  #083772;
-    background: #083772
+    background-color:  #000;
+    background: #000
 }
 
 .icon-menu {background-image: url(../img/menu.png) !important;}
