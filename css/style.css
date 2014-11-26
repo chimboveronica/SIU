@@ -94,10 +94,23 @@ strong#subtitulo{
 
 #encabezado{
     font-family: arial;
-    font-size: 20px;
+    font-size: 35px;
+    color:#006dcc ;
+}
+#texto{
+    font-family: arial;
+    font-size: 35px;
+    color:#006dcc ;
+    
+}
+#parada{
+    font-family: arial;
+    font-size: 15px;
     color: white;
 }
-
+#imagen{
+    position: absolute; bottom: 20px; right: 20px;
+}
 #over{
     font-family: arial;
     font-size: 12px;

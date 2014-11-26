@@ -5,6 +5,9 @@
  */
 var panelSouth;
 var msgForNormal;
+var mensaje;
+var formMensaje;
+var id;
 var required = '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>';
 Ext.Loader.setConfig({
     enabled: true
@@ -36,9 +39,17 @@ var spot = Ext.create('Ext.ux.Spotlight', {
     easing: 'easeOut',
     duration: 500
 });
+
+var labelMensaje = Ext.create('Ext.form.Label', {
+    text: '',
+    margin: '5 5 5 5',
+    height: '100',
+    style: {
+        color: 'black'
+    }
+});
 Ext.onReady(function () {
     Ext.tip.QuickTipManager.init();
-    arregloAviso();
     //Panel para Web
     var panelMenu = Ext.create('Ext.form.Panel', {
         region: 'north',
@@ -75,18 +86,9 @@ Ext.onReady(function () {
         ]
     }
     );
-    var storeVideos = Ext.create('Ext.data.JsonStore', {
-        autoLoad: true,
-        proxy: {
-            type: 'ajax',
-            url: 'php/getvideos.php',
-            reader: {
-                type: 'json',
-                root: 'data'
-            }
-        },
-        fields: ['id', 'orden', 'video']
-    });
+
+
+
     var grid = Ext.create('Ext.grid.Panel', {
         height: '50%',
         margins: '5 5 5 5',
@@ -193,7 +195,7 @@ Ext.onReady(function () {
 
         ]
     });
-    var formMensaje = Ext.create('Ext.form.Panel', {
+    formMensaje = Ext.create('Ext.form.Panel', {
         region: 'east',
         title: 'Administración de Mensaje',
         width: '40%',
@@ -222,9 +224,8 @@ Ext.onReady(function () {
                 name: 'mensaje',
                 labelWidth: 95,
                 height: 200,
-                vtype: 'campos',
                 emptyText: 'Ingresar Mensaje...'
-            }
+            }, labelMensaje
         ],
         dockedItems: [{
                 xtype: 'toolbar',
@@ -237,33 +238,36 @@ Ext.onReady(function () {
                         iconCls: 'icon-update',
                         itemId: 'update',
                         text: 'Actualizar',
-                        disabled: true,
                         tooltip: 'Actualizar',
+                        handler: function () {
+                            var valor = formMensaje.down('[name=mensaje]').getValue();
+                            Ext.Ajax.request({
+                                url: 'php/informacion/update.php',
+                                params: {
+                                    mensaje: valor
+                                },
+                                method: 'POST',
+                                failure: function (form, action) {
+                                    Ext.MessageBox.show({
+                                        title: 'Error...',
+                                        msg: 'No se pudo guardar',
+                                        buttons: Ext.MessageBox.ERROR,
+                                        icon: Ext.MessageBox.ERROR
+                                    });
+                                },
+                                success: function (form, action) {
+                                    storeInformacion.reload();
+                                    formMensaje.down('[name=mensaje]').setValue('');
+                                    labelMensaje.setHtml('Mensaje Actual:</br></br>' + '<marquee  style="bottom: 20px; " width="100%" height="50" loop="-1" scrollamount="2"  ><font color="#083772" size="90"> <p width="100" height="50">' + valor + '</p> </font></marquee>');
+                                    Ext.example.msg("Mensaje", 'Datos insertados correctamente');
+                                }
+                            });
+                        }
                     }]
             }]
     });
-    var panelSur = Ext.create('Ext.panel.Panel', {
-        region: 'south',
-        height: '20%',
-        bodyStyle: {
-            background: 'white'
-        },
-        style: {
-            borderColor: '#cecece',
-            borderStyle: 'solid',
-            borderTopWidth: '10px',
-            borderRightWidth: '10px',
-            borderBottomWidth: '10px',
-            borderLeftWidth: '10px'
-        },
-        margins: '10 10 10 10',
-        html:
-                '<div class="carrusel">' +
-                '<ul class="bloque-imagenes">' +
-                msgForNormal +
-                '</ul>' +
-                '</div>'
-    });
+    ponerMensaje();
+
     var panelCentral = Ext.create('Ext.form.Panel', {
         region: 'center',
         layout: 'border',
@@ -277,22 +281,16 @@ Ext.onReady(function () {
             background: '#cecece'
         },
         items: [
-            panelMenu, panelCentral, panelSur]
+            panelMenu, panelCentral]
     });
 });
-function arregloAviso() {
-    var dato = ['</t>Chiva novembrina visita hoy barrios Geranios, Sol de los Andes,Capulí Loma y Lote Bonito desde las 18H30', '</t> Les invitamos a participar del pregón de festividades por los 194 años de independencia y 466 años de fundación de Loja, este viernes 14 de noviembre.', 'En el parque Simón Bolívar, se desarrolla la presentación de titeres, que esta dirigida a los niños y niñas de las diferentes escuelas de la ciudad'];
-    msgForNormal = '';
-    for (var i = 0; i < dato.length; i++) {
-        msgForNormal = msgForNormal + '<li>' + dato[i] + '</li>';
-    }
 
-}
-function arregloVideos() {
-    var dato = ['</t>Chiva novembrina visita hoy barrios Geranios, Sol de los Andes,Capulí Loma y Lote Bonito desde las 18H30', '</t> Les invitamos a participar del pregón de festividades por los 194 años de independencia y 466 años de fundación de Loja, este viernes 14 de noviembre.', 'En el parque Simón Bolívar, se desarrolla la presentación de titeres, que esta dirigida a los niños y niñas de las diferentes escuelas de la ciudad'];
-    msgForNormal = '';
-    for (var i = 0; i < dato.length; i++) {
-        msgForNormal = msgForNormal + '<li>' + dato[i] + '</li>';
-    }
+function ponerMensaje() {
+    storeInformacion.reload();
+    id = storeInformacion.data.items[0].data.id;
+    mensaje = storeInformacion.data.items[0].data.mensaje;
+    labelMensaje.setHtml('Mensaje Actual:</br></br>' + '<marquee  style="bottom: 5px; " width="100%" height="100%" loop="-1" scrollamount="2"  ><font color="#083772" size="50"></br> <p width="100" height="150">' + mensaje + '</p> </font></marquee>');
+
+
 
 }

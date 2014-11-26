@@ -48,16 +48,16 @@ $(document).ready(
                 carrusel();
             }, 70);
 
-
-            $('.bloque-imagenes').mouseover(function () {
-                clearInterval(parar);
-
-            });
-
-            $('.bloque-imagenes').mouseout(function () {
-                parar = setInterval(function mover() {
-                    carrusel();
-                }, 70);
-            });
+//
+//            $('.bloque-imagenes').mouseover(function () {
+//                clearInterval(parar);
+//
+//            });
+//
+//            $('.bloque-imagenes').mouseout(function () {
+//                parar = setInterval(function mover() {
+//                    carrusel();
+//                }, 70);
+//            });
 
         });

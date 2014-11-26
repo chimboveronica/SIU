@@ -6,9 +6,18 @@
 var panelSouth;
 var storeBuses;
 var msgForNormal;
+var mensajes;
 var required = '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>';
 Ext.Loader.setConfig({
     enabled: true
+});
+var labelMensajes = Ext.create('Ext.form.Label', {
+    text: '',
+    margin: '0 0 0 0',
+    height: '100',
+    style: {
+        color: 'black'
+    }
 });
 Ext.Loader.setPath('Ext.ux', 'extjs-docs-5.0.0/extjs-build/build/examples/ux');
 Ext.require([
@@ -38,7 +47,7 @@ var spot = Ext.create('Ext.ux.Spotlight', {
     duration: 500
 });
 Ext.onReady(function () {
-    arregloAviso();
+    
     //Panel para Web
     var panelMenu = Ext.create('Ext.form.Panel', {
         region: 'north',
@@ -47,14 +56,19 @@ Ext.onReady(function () {
         items: [{
                 layout: 'hbox',
                 bodyStyle: {
-                    background: 'black'
+                    background: '#cecece'
                 },
                 items: [
                     {
-                        padding: '10 10 10 10',
+                        padding: '5 5 5 5',
+                        xtype: 'label',
+                        html: '<img src="img/situ.png" width="100" height="80">'
+                    },
+                    {
+                        padding: '30 10 10 160',
                         height: 40,
                         xtype: 'label',
-                        html: '<div id="encabezado"><p><b>SISTEMA DE INFORMACIÓN DEL USUARIO</b></p><br>'
+                        html: '<div id="encabezado"><p><b>SISTEMA INTERMODAL DE TRANSPORTE URBANO</b></p><br>'
                     }
                 ]
             },
@@ -64,15 +78,15 @@ Ext.onReady(function () {
                     background: '#006dcc'
                 },
                 items: [
+//                    {
+//                        xtype: 'label',
+//                        html: '<img src="img/logo1.png" width="70" height="50">'
+//                    },
                     {
+                        padding: '10 10 10 10',
+                        height: 40,
                         xtype: 'label',
-                        html: '<img src="img/logo1.png" width="70" height="50">'
-                    },
-                    {
-                        padding: '20 2 10 10',
-                        height: 50,
-                        xtype: 'label',
-                        html: '<div id="parada"><b>PARADA:</b> Sauces Norte - Argelia</div>'
+                        html: '<div id="parada"><b>PARADA:</b> 10 de Agosto</div>'
 
                     }
                 ]
@@ -105,10 +119,11 @@ Ext.onReady(function () {
             borderLeftWidth: '10px'
         },
         columns: [
-            {header: "<b>Reg_Municipal</b>", width: 150, align: 'center', sortable: true, dataIndex: 'regMunicipal'},
+            {header: "<b>Bus</b>", width: 150, align: 'center', sortable: true, dataIndex: 'regMunicipal'},
             {header: "<b>Ruta</b>", align: 'center', width: 180, sortable: true, dataIndex: 'ruta'},
-            {header: "<b>Tiempo llegada</b>", width: 160, sortable: true, align: 'center', dataIndex: 'tiempoLlegada', format: 'H:i:s'},
-            {header: "<b>Tiempo Restante</b>", width: 160, sortable: true, align: 'center', dataIndex: 'tiempoRestante', format: 'H:i:s'}
+            {header: "<b>Arribo</b>", width: 160, columns: [{header: "<b>Tiempo llegada</b>", width: 160, sortable: true, align: 'center', dataIndex: 'tiempoLlegada', format: 'H:i:s'},
+                    {header: "<b>Tiempo Restante</b>", width: 160, sortable: true, align: 'center', dataIndex: 'tiempoRestante', format: 'H:i:s'}
+                ]},
         ],
         width: '50%',
         region: 'west',
@@ -231,7 +246,7 @@ Ext.onReady(function () {
                         '<div class="navbar section" id="navbar"></div>' +
                         '<div class="margin">' +
                         '<div id="vplayer">' +
-                        '<video onclick="init()" controls="" height="330" id="video" preload="auto" tabindex="0" type="video/mp4" width="1000">' +
+                        '<video onclick="init()" controls="" height="310" id="video" preload="auto" tabindex="0" type="video/mp4" width="1000">' +
                         '<source src="videos/noviembre_15_2014.mp4" type="video/mp4"></source>' +
                         'Hola, tu navegador no está actualizado y no puede mostrar este contenido.' +
                         '</video>' +
@@ -244,33 +259,22 @@ Ext.onReady(function () {
             }]
     });
     var panelSur = Ext.create('Ext.panel.Panel', {
-        region: 'south',
-        height: '20%',
-        items: [{
-                bodyStyle: {
-                    background: '#006dcc'
+     region: 'south',
+     height: '18%',
+        bodyStyle: {
+                    background: '#cecece'
                 },
                 style: {
                     borderColor: '#cecece',
                     borderStyle: 'solid',
-                    borderTopWidth: '10px',
-                    borderRightWidth: '10px',
-                    borderBottomWidth: '10px',
-                    borderLeftWidth: '10px'
+                    borderTopWidth: '4px',
+                    borderRightWidth: '4px',
+                    borderBottomWidth: '4px',
+                    borderLeftWidth: '4px'
                 },
-                margins: '10 10 10 10',
-                html:
-                        '<div class="carrusel">' +
-                        '<ul class="bloque-imagenes">' +
-                        msgForNormal +
-                        '</ul>' +
-                        '</div>'
-            },
-//            {
-//                xtype: 'label',
-//                margins: '10 10 10 10',
-//                html: '<img src="img/logo.png" width="70" height="40" style="float:right"/>'
-//            }
+                margins: '0 0 0 0',
+        items: [labelMensajes              
+               
         ]
     });
     var panelCentral = Ext.create('Ext.form.Panel', {
@@ -289,19 +293,23 @@ Ext.onReady(function () {
             panelMenu, panelCentral, panelSur]
     });
 });
-function arregloAviso() {
-    var dato = ['</t>Chiva novembrina visita hoy barrios Geranios, Sol de los Andes,Capulí Loma y Lote Bonito desde las 18H30', '</t> Les invitamos a participar del pregón de festividades por los 194 años de independencia y 466 años de fundación de Loja, este viernes 14 de noviembre.', 'En el parque Simón Bolívar, se desarrolla la presentación de titeres, que esta dirigida a los niños y niñas de las diferentes escuelas de la ciudad'];
-    msgForNormal = '';
-    for (var i = 0; i < dato.length; i++) {
-        msgForNormal = msgForNormal + '<li>' + dato[i] + '</li>';
-    }
 
-}
-function arregloVideos() {
-    var dato = ['</t>Chiva novembrina visita hoy barrios Geranios, Sol de los Andes,Capulí Loma y Lote Bonito desde las 18H30', '</t> Les invitamos a participar del pregón de festividades por los 194 años de independencia y 466 años de fundación de Loja, este viernes 14 de noviembre.', 'En el parque Simón Bolívar, se desarrolla la presentación de titeres, que esta dirigida a los niños y niñas de las diferentes escuelas de la ciudad'];
-    msgForNormal = '';
-    for (var i = 0; i < dato.length; i++) {
-        msgForNormal = msgForNormal + '<li>' + dato[i] + '</li>';
-    }
+var store = Ext.create('Ext.data.JsonStore', {
+    autoLoad: true,
+    proxy: {
+        type: 'ajax',
+        url: 'php/getInformacion.php',
+        reader: {
+            type: 'json',
+            root: 'data'
+        }
+    },
+    fields: ['id', 'mensaje']
+});
+    ponerMensajes();
 
+function ponerMensajes() {
+    store.reload();
+    mensajes = "EL ÚNICO MEDIO DE PAGO ES LA TARJETA INTELIGENTE PREPAGO | ILUSTRE MUNICIPIO DE LOJA BUSCA MEJORAR LOS SERVIVIOS PARA LA CIUDADANÍA ";
+    labelMensajes.setHtml('<marquee  style="bottom: 3px; top: 3px; " width="100%" height="90%" loop="-1" scrollamount="2"  ><font color="#083772" size="150"> </br><p width="100" height="100">' + mensajes + '</p> </font></marquee>');
 }
