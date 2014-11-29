@@ -1,4 +1,6 @@
-var storeVideos = Ext.create('Ext.data.JsonStore', {
+var storeInformacion ;
+var storeVideos;
+storeVideos = Ext.create('Ext.data.JsonStore', {
     autoLoad: true,
     proxy: {
         type: 'ajax',
@@ -10,7 +12,7 @@ var storeVideos = Ext.create('Ext.data.JsonStore', {
     },
     fields: ['id', 'orden', 'video']
 });
-var storeInformacion = Ext.create('Ext.data.JsonStore', {
+storeInformacion = Ext.create('Ext.data.JsonStore', {
     autoLoad: true,
     proxy: {
         type: 'ajax',

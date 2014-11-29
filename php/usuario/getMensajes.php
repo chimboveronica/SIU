@@ -1,13 +1,13 @@
 <?php
 
-include ('../dll/config.php');
-extract($_POST);
+include ('../../dll/config.php');
 
 if (!$mysqli = getConectionDb()) {
     echo "{success:false, msg: 'Error: No se ha podido conectar a la Base de Datos.<br>Compruebe su conexión a Internet.'}";
 } else {
 
     $consultaSql = "SELECT * FROM siudb.informacion";
+
 
     $result = $mysqli->query($consultaSql);
     $mysqli->close();

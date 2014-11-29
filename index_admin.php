@@ -7,12 +7,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" href="img/icon_kbus.png" type="image/x-icon"> 
         <link rel="stylesheet" type="text/css" href="css/data-view.css">
-        <link href="bootstrap/bootstrap.css" rel="stylesheet">
-        <link href="bootstrap/bootstrap-responsive.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="css/style.css">
     </head>
     <body>
-
     <center>  
         <p></p>
         <div>

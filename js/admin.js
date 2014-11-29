@@ -8,6 +8,8 @@ var msgForNormal;
 var mensaje;
 var formMensaje;
 var id;
+var video;
+var idVideo;
 var required = '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>';
 Ext.Loader.setConfig({
     enabled: true
@@ -35,10 +37,7 @@ Ext.require([
     'Ext.ux.CheckColumn',
     'Ext.ux.Spotlight'
 ]);
-var spot = Ext.create('Ext.ux.Spotlight', {
-    easing: 'easeOut',
-    duration: 500
-});
+
 
 var labelMensaje = Ext.create('Ext.form.Label', {
     text: '',
@@ -50,35 +49,42 @@ var labelMensaje = Ext.create('Ext.form.Label', {
 });
 Ext.onReady(function () {
     Ext.tip.QuickTipManager.init();
-    //Panel para Web
     var panelMenu = Ext.create('Ext.form.Panel', {
         region: 'north',
         deferreRender: false,
         activeTab: 0,
-        items: [{
+        items: [
+            {
                 layout: 'hbox',
                 bodyStyle: {
-                    background: 'black'
+                    backgroundImage: 'url("img/img_principal - copia.png")'
                 },
                 items: [
                     {
-                        padding: '10 10 10 10',
-                        height: 60,
+                        padding: '2 2 2 2',
                         xtype: 'label',
-                        html: '<div id="encabezado"><p>SISTEMA DE INFORMACIÓN DEL USUARIO</p><br>'
+                        html: '<img src="img/ic_situ - copia.png" width="80" height="90">'
+                    },
+                    {
+                        padding: '15 10 10 15',
+                        height: 40,
+                        xtype: 'label',
+                        html: '<div id="encabezado">Sistema intermodal de<br><br> <b>TRANSPORTE URBANO</b><br>'
                     }
                 ]
             },
             {
                 layout: 'hbox',
                 bodyStyle: {
+                    backgroundImage: 'url("img/img_principal - copia.png")',
                     background: '#006dcc'
                 },
                 items: [
                     {
-                        padding: '10 2 10 20',
+                        padding: '10 10 10 10',
+                        height: 40,
                         xtype: 'label',
-                        html: '<div id="encabezado"><p><b>PARADA:</b> Sauces Norte - Argelia</p>'
+                        html: '<div id="parada"><b>PARADA:</b> 10 de Agosto</div>'
 
                     }
                 ]
@@ -87,21 +93,11 @@ Ext.onReady(function () {
     }
     );
 
-
-
     var grid = Ext.create('Ext.grid.Panel', {
         height: '50%',
         margins: '5 5 5 5',
         bodyStyle: 'padding: 10px; background-color: #DFE8F6',
         store: storeVideos,
-//        style: {
-//            bborderColor: '#cecece',
-//            borderStyle: 'solid',
-//            borderTopWidth: '10px',
-//            borderRightWidth: '10px',
-//            borderBottomWidth: '10px',
-//            borderLeftWidth: '10px'
-//        },
         columns: [
             {header: "<b>Orden</b>", align: 'center', width: 90, sortable: true, dataIndex: 'orden'},
             {header: "<b>Video</b>", width: 250, align: 'center', sortable: true, dataIndex: 'video', filter: {type: 'string'}},
@@ -110,6 +106,15 @@ Ext.onReady(function () {
         width: '30%',
         region: 'west',
         title: 'Registro de Videos',
+        listeners: {
+            itemclick: function (thisObj, record, item, index, e, eOpts) {
+                idVideo = record.get('id');
+                console.log(record.get('id'));
+                console.log(record.get('video'));
+                console.log(record.get('orden'));
+                formVideo.down('[name=orden]').setValue(record.get('orden'));
+                formVideo.down('[name=imagePerson]').setValue(record.get('video'));
+            }}
     });
     var formVideo = Ext.create('Ext.form.Panel', {
         region: 'center',
@@ -126,24 +131,30 @@ Ext.onReady(function () {
         },
         items: [
             {
-                fieldLabel: 'Img',
+                fieldLabel: 'Video',
                 xtype: 'textfield',
                 name: 'imagePerson',
-                id: 'imagePerson',
-                hidden: true
+                id: 'imagePerson'
+            },
+            {
+                id: 'selector',
+                xtype: 'numberfield',
+                fieldLabel: 'Orden',
+                labelSeparator: '',
+                name: 'orden',
+                minValue: 1
             },
             {
                 xtype: 'form',
                 layout: 'anchor',
-                margin: '10 10 10 10',
+                margin: '0 0 0 0',
                 items: [
                     {
                         xtype: 'filefield',
                         name: 'imageFile',
-                        emptyText: "Máximo 2Minutos",
+                        emptyText: "Máximo 2Mb",
                         labelSeparator: '',
                         fieldLabel: '<div id="camposForm">Video:</div>',
-                        width: 250,
                         buttonConfig: {
                             iconCls: 'icon-upload',
                             text: '',
@@ -155,13 +166,13 @@ Ext.onReady(function () {
                                 form.submit({
                                     url: 'php/upload/uploadVideo.php',
                                     success: function (form, action) {
-                                        formVideo.down('[name=labelImage]').setSrc('img/usuario/' + action.result['img']);
-                                        formVideo.down('[name=imagePerson]').setValue('img/usuario/' + action.result['img']);
-//                                        console.log(action.result['img']);
-//                                        thisObj.setValue(action.result['img']);
+                                        formVideo.down('[name=imagePerson]').setValue('videos/' + action.result['img']);
+                                        console.log(action.result['img']);
+                                        video = action.result['img'];
+                                        thisObj.setValue(action.result['img']);
                                     },
                                     failure: function (form, action) {
-                                        Ext.Msg.alert('Error', 'No se pudo subir la imagen');
+                                        Ext.Msg.alert('Error', 'No se pudo subir el video');
                                     }
                                 });
                             }
@@ -169,27 +180,74 @@ Ext.onReady(function () {
                     }
 
                 ]
-            }],
-        dockedItems: [{
+            }
+        ],
+        dockedItems: [
+            {
                 xtype: 'toolbar',
                 dock: 'bottom',
                 ui: 'footer',
                 items: ['->',
                     {style: {
                             background: '#006dcc'
-                        }, iconCls: 'icon-updat', itemId: 'update', text: '<div id="botonesMenuForm">Actualizar</div>', scope: this, tooltip: '<div id="tooltip">Actualizar Datos</div>'},
+                        }, iconCls: 'icon-updat', itemId: 'update', text: '<div id="botonesMenuForm">Subir Video</div>', scope: this, tooltip: '<div id="tooltip">Subir</div>', handler: function () {
+
+                            Ext.Ajax.request({
+                                url: 'php/video/subir.php',
+                                params: {
+                                    video: video,
+                                    orden: 3
+                                },
+                                method: 'POST',
+                                failure: function (form, action) {
+                                    Ext.MessageBox.show({
+                                        title: 'Error...',
+                                        msg: 'No se pudo guardar',
+                                        buttons: Ext.MessageBox.ERROR,
+                                        icon: Ext.MessageBox.ERROR
+                                    });
+                                },
+                                success: function (form, action) {
+                                    Ext.example.msg("Mensaje", 'Datos insertados correctamente');
+                                    storeVideos.reload();
+                                    formVideo.getForm().reset();
+                                }
+                            });
+                        }
+                    },
                     {style: {
                             background: '#006dcc'
-                        }, iconCls: 'icon-add', itemId: 'create', text: '<div id="botonesMenuForm">Crear</div>', scope: this, tooltip: '<div id="tooltip">Crear Persona</div>', },
+                        }, iconCls: 'icon-add', itemId: 'create', text: '<div id="botonesMenuForm">Eliminar video</div>', scope: this, tooltip: '<div id="tooltip">Eliminar</div>', handler: function () {
+                            console.log(idVideo);
+                            Ext.Ajax.request({
+                                url: 'php/video/destroy.php',
+                                params: {
+                                    idVideo: idVideo
+                                },
+                                method: 'POST',
+                                failure: function (form, action) {
+                                    Ext.MessageBox.show({
+                                        title: 'Error...',
+                                        msg: 'No se pudo guardar',
+                                        buttons: Ext.MessageBox.ERROR,
+                                        icon: Ext.MessageBox.ERROR
+                                    });
+                                },
+                                success: function (form, action) {
+                                    Ext.example.msg("Mensaje", 'Datos eliminados correctamente');
+                                    storeVideos.reload();
+                                    formVideo.getForm().reset();
+
+                                }
+                            });
+                        }},
                     {style: {
                             background: '#006dcc'
-                        }, iconCls: 'icon-reset', itemId: 'delete', scope: this, tooltip: '<div id="tooltip">Eliminar Persona</div>', },
-                    {style: {
-                            background: '#006dcc'
-                        }, iconCls: 'limpiar', tooltip: '<div id="tooltip">Limpiar Campos</div>', scope: this, },
-                    {style: {
-                            background: '#006dcc'
-                        }}
+                        }, iconCls: 'limpiar', text: '<div id="botonesMenuForm">Limpiar</div>', tooltip: '<div id="tooltip">Limpiar Campos</div>', scope: this,
+                        handler: function () {
+                            formVideo.getForm().reset();
+                        }
+                    }
                 ]
             }
 
@@ -208,7 +266,6 @@ Ext.onReady(function () {
             borderLeftWidth: '10px'
         },
         bodyStyle: 'padding: 10px; background-color: #DFE8F6',
-//        margins: '0 0 0 3',
         defaultType: 'textfield',
         layout: 'anchor',
         fieldDefaults: {
@@ -227,11 +284,13 @@ Ext.onReady(function () {
                 emptyText: 'Ingresar Mensaje...'
             }, labelMensaje
         ],
-        dockedItems: [{
+        dockedItems: [
+            {
                 xtype: 'toolbar',
                 dock: 'bottom',
                 ui: 'footer',
-                items: ['->', {
+                items: ['->',
+                    {
                         style: {
                             background: '#006dcc'
                         },
@@ -241,6 +300,7 @@ Ext.onReady(function () {
                         tooltip: 'Actualizar',
                         handler: function () {
                             var valor = formMensaje.down('[name=mensaje]').getValue();
+                            console.log(valor);
                             Ext.Ajax.request({
                                 url: 'php/informacion/update.php',
                                 params: {
@@ -263,14 +323,19 @@ Ext.onReady(function () {
                                 }
                             });
                         }
-                    }]
-            }]
+                    }
+                ]
+            }
+        ]
     });
     ponerMensaje();
 
     var panelCentral = Ext.create('Ext.form.Panel', {
         region: 'center',
         layout: 'border',
+        bodyStyle: {
+            backgroundImage: 'url("img/img_principal - copia.png")'
+        },
         items: [
             formVideo, grid, formMensaje
         ]
@@ -290,7 +355,4 @@ function ponerMensaje() {
     id = storeInformacion.data.items[0].data.id;
     mensaje = storeInformacion.data.items[0].data.mensaje;
     labelMensaje.setHtml('Mensaje Actual:</br></br>' + '<marquee  style="bottom: 5px; " width="100%" height="100%" loop="-1" scrollamount="2"  ><font color="#083772" size="50"></br> <p width="100" height="150">' + mensaje + '</p> </font></marquee>');
-
-
-
 }
