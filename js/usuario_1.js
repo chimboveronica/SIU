@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 var panelSouth;
-var storeBuses;
 var msgForNormal;
 var mensajes;
 var required = '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>';
@@ -30,9 +29,9 @@ var spot = Ext.create('Ext.ux.Spotlight', {
     duration: 500
 });
 Ext.onReady(function () {
-
     var panelMenu = Ext.create('Ext.form.Panel', {
         region: 'north',
+        height: '10%',
         deferreRender: false,
         activeTab: 0,
         items: [
@@ -45,66 +44,69 @@ Ext.onReady(function () {
                     {
                         padding: '2 2 2 2',
                         xtype: 'label',
-                        html: '<img src="img/ic_situ - copia.png" width="80" height="90">'
+                        html: '<img src="img/ic_situ - copia.png" width="60" height="60">'
                     },
                     {
-                        padding: '15 10 10 15',
-                        height: 40,
+                        padding: '15 2 2 2',
+                        height: 20,
                         xtype: 'label',
-                        html: '<div id="encabezado">Sistema intermodal de<br><br> <b>TRANSPORTE URBANO</b><br>'
+                        html: '<div id="encabezado">Sistema intermodal de <b>TRANSPORTE URBANO</b>'
                     }
                 ]
             },
-            {
-                layout: 'hbox',
-                bodyStyle: {
-                    backgroundImage: 'url("img/img_principal - copia.png")',
-                    background: '#006dcc'
-                },
-                items: [
-                    {
-                        padding: '10 10 10 10',
-                        height: 40,
-                        xtype: 'label',
-                        html: '<div id="parada"><b>PARADA:</b> 10 de Agosto</div>'
-
-                    }
-                ]
-            }
+//            {
+//                layout: 'hbox',
+//                bodyStyle: {
+//                    backgroundImage: 'url("img/img_principal - copia.png")',
+//                    background: '#006dcc'
+//                },
+//                items: [
+//                    {
+//                        padding: '10 10 10 10',
+//                        height: 20,
+//                        xtype: 'label',
+//                        html: '<div id="parada"><b>PARADA:</b> 10 de Agosto</div>'
+//
+//                    }
+//                ]
+//            }
         ]
     }
     );
-    var storeBuses = Ext.create('Ext.data.JsonStore', {
-        autoLoad: true,
-        proxy: {
-            type: 'ajax',
-            url: 'php/getbuses.php',
-            reader: {
-                type: 'json',
-                root: 'data'
-            }
-        },
-        fields: ['id', 'ruta', 'tiempoLllegada', 'tiempoRestante', 'regMunicipal']
-    });
+//        var storeBuses = Ext.create('Ext.data.JsonStore', {
+//        autoLoad: true,
+//        proxy: {
+//            type: 'ajax',
+//            url: 'php/getbuses.php',
+//            reader: {
+//                type: 'json',
+//                root: 'data'
+//            }
+//        },
+//        fields: ['id', 'ruta', 'tiempoLllegada', 'tiempoRestante', 'regMunicipal']
+//    });
 //        mensajes = storeInformacion.data.items[0].data.mensaje;
+
     var grid = Ext.create('Ext.grid.Panel', {
         height: '100%',
+        title: 'PARADA:</b>10 de Agosto',
         margins: '10 10 10 10',
         store: storeBuses,
-        style: {
-            borderColor: '#E0ECFF',
-//            opacity: '0.5',
-            borderStyle: 'solid',
-            borderTopWidth: '20px',
-            borderRightWidth: '10px',
-            borderBottomWidth: '20px',
-            borderLeftWidth: '10px'
-        },
+//        style: {
+//            borderColor: '#E0ECFF',
+////            opacity: '0.5',
+//            borderStyle: 'solid',
+//            borderTopWidth: '20px',
+//            borderRightWidth: '10px',
+//            borderBottomWidth: '20px',
+//            borderLeftWidth: '10px'
+//        },
         columns: [
-            {header: "<b>Bus</b>", width: 150, align: 'center', sortable: true, dataIndex: 'regMunicipal'},
-            {header: "<b>Ruta</b>", align: 'center', width: 180, sortable: true, dataIndex: 'ruta'},
-            {header: "<b>Arribo</b>", width: 160, columns: [{header: "<b>Tiempo llegada</b>", width: 160, sortable: true, align: 'center', dataIndex: 'tiempoLlegada', format: 'H:i:s'},
-                    {header: "<b>Tiempo Restante</b>", width: 160, sortable: true, align: 'center', dataIndex: 'tiempoRestante', format: 'H:i:s'}
+            {header: "<b>Bus</b>", width: 100, align: 'center', sortable: true, dataIndex: 'regMunicipal'},
+            {header: "<b>Ruta</b>", align: 'center', width: 280, sortable: true, dataIndex: 'ruta'},
+            {header: "<b>Tiempo</b>", width: 240, columns: [
+                    {header: "<b>Llegada</b>", width: 100, sortable: true, align: 'center', dataIndex: 'horaLlegada', format: 'H:i:s'},
+                    {header: "<b>Arribo</b>", width: 100, sortable: true, align: 'center', dataIndex: 'horaArribo', format: 'H:i:s'}
                 ]}
         ],
         width: '50%',
@@ -116,18 +118,18 @@ Ext.onReady(function () {
     var formVideo = Ext.create('Ext.form.Panel', {
         region: 'center',
         margins: '10 10 10 10',
-        style: {
-            borderColor: '#E0ECFF',
-            background: '#000',
-            borderStyle: 'solid',
-            borderTopWidth: '5px',
-            borderRightWidth: '10px',
-            borderBottomWidth: '5px',
-            borderLeftWidth: '10px'
-        },
+//        style: {
+//            borderColor: '#E0ECFF',
+//            background: '#000',
+//            borderStyle: 'solid',
+//            borderTopWidth: '5px',
+//            borderRightWidth: '10px',
+//            borderBottomWidth: '5px',
+//            borderLeftWidth: '10px'
+//        },
         items: [{
                 xtype: 'label',
-                height: '50%',
+                height: '100%',
                 bodyStyle: {
                     backgroundImage: 'url("img/img_principal - copia.png")'
                 },
@@ -136,7 +138,7 @@ Ext.onReady(function () {
                         '<div class="navbar section" id="navbar"></div>' +
                         '<div class="margin">' +
                         '<div id="vplayer">' +
-                        '<video onclick="init()" controls="" height="310" id="video" preload="auto" tabindex="0" type="video/mp4" width="1000">' +
+                        '<video onclick="init()" controls="" height="400" id="video" preload="auto" tabindex="0" type="video/mp4" width="1000">' +
                         '<source src="videos/noviembre_15_2014.mp4" type="video/mp4"></source>' +
                         'Hola, tu navegador no está actualizado y no puede mostrar este contenido.' +
                         '</video>' +
@@ -168,6 +170,7 @@ Ext.onReady(function () {
     var panelCentral = Ext.create('Ext.form.Panel', {
         region: 'center',
         layout: 'border',
+        height: '80%',
         bodyStyle: {
             backgroundImage: 'url("img/img_principal - copia.png")',
             opacity: '4'
