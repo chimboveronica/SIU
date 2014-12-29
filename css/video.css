@@ -8,13 +8,13 @@ and open the template in the editor.
     Author     : Veronica C
 */
 .margin {
-    width: 650px;
+    width: 670px;
     margin:0;
     text-align:left;
     padding:0;
 }
 #vplaylist, #vplayer {
-    width: 650px;
+    width: 670px;
     padding: 20px;
     margin: 0 auto;
     display: block;

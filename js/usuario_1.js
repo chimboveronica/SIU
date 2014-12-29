@@ -47,64 +47,27 @@ Ext.onReady(function () {
                         html: '<img src="img/ic_situ - copia.png" width="60" height="60">'
                     },
                     {
-                        padding: '15 2 2 2',
-                        height: 20,
+                        padding: '15 2 2 320',
+                        height: 15,
                         xtype: 'label',
                         html: '<div id="encabezado">Sistema intermodal de <b>TRANSPORTE URBANO</b>'
                     }
                 ]
             },
-//            {
-//                layout: 'hbox',
-//                bodyStyle: {
-//                    backgroundImage: 'url("img/img_principal - copia.png")',
-//                    background: '#006dcc'
-//                },
-//                items: [
-//                    {
-//                        padding: '10 10 10 10',
-//                        height: 20,
-//                        xtype: 'label',
-//                        html: '<div id="parada"><b>PARADA:</b> 10 de Agosto</div>'
-//
-//                    }
-//                ]
-//            }
         ]
     }
     );
-//        var storeBuses = Ext.create('Ext.data.JsonStore', {
-//        autoLoad: true,
-//        proxy: {
-//            type: 'ajax',
-//            url: 'php/getbuses.php',
-//            reader: {
-//                type: 'json',
-//                root: 'data'
-//            }
-//        },
-//        fields: ['id', 'ruta', 'tiempoLllegada', 'tiempoRestante', 'regMunicipal']
-//    });
-//        mensajes = storeInformacion.data.items[0].data.mensaje;
+
 
     var grid = Ext.create('Ext.grid.Panel', {
         height: '100%',
         title: 'PARADA:</b>10 de Agosto',
         margins: '10 10 10 10',
         store: storeBuses,
-//        style: {
-//            borderColor: '#E0ECFF',
-////            opacity: '0.5',
-//            borderStyle: 'solid',
-//            borderTopWidth: '20px',
-//            borderRightWidth: '10px',
-//            borderBottomWidth: '20px',
-//            borderLeftWidth: '10px'
-//        },
         columns: [
             {header: "<b>Bus</b>", width: 100, align: 'center', sortable: true, dataIndex: 'regMunicipal'},
             {header: "<b>Ruta</b>", align: 'center', width: 280, sortable: true, dataIndex: 'ruta'},
-            {header: "<b>Tiempo</b>", width: 240, columns: [
+            {header: "<b>Tiempo</b>", width: 300, columns: [
                     {header: "<b>Llegada</b>", width: 100, sortable: true, align: 'center', dataIndex: 'horaLlegada', format: 'H:i:s'},
                     {header: "<b>Arribo</b>", width: 100, sortable: true, align: 'center', dataIndex: 'horaArribo', format: 'H:i:s'}
                 ]}
@@ -118,15 +81,6 @@ Ext.onReady(function () {
     var formVideo = Ext.create('Ext.form.Panel', {
         region: 'center',
         margins: '10 10 10 10',
-//        style: {
-//            borderColor: '#E0ECFF',
-//            background: '#000',
-//            borderStyle: 'solid',
-//            borderTopWidth: '5px',
-//            borderRightWidth: '10px',
-//            borderBottomWidth: '5px',
-//            borderLeftWidth: '10px'
-//        },
         items: [{
                 xtype: 'label',
                 height: '100%',
@@ -138,7 +92,7 @@ Ext.onReady(function () {
                         '<div class="navbar section" id="navbar"></div>' +
                         '<div class="margin">' +
                         '<div id="vplayer">' +
-                        '<video onclick="init()" controls="" height="400" id="video" preload="auto" tabindex="0" type="video/mp4" width="1000">' +
+                        '<video onclick="init()" controls="" height="410" id="video" preload="auto" tabindex="0" type="video/mp4" width="1200">' +
                         '<source src="videos/noviembre_15_2014.mp4" type="video/mp4"></source>' +
                         'Hola, tu navegador no está actualizado y no puede mostrar este contenido.' +
                         '</video>' +
@@ -164,7 +118,6 @@ Ext.onReady(function () {
             borderBottomWidth: '0px',
             borderLeftWidth: '0px'
         },
-//        margins: '0 0 0 0',
         items: [labelMensajes]
     });
     var panelCentral = Ext.create('Ext.form.Panel', {
@@ -194,6 +147,6 @@ Ext.onReady(function () {
 
 function ponerMensajes() {
     mensajes = "EL ÚNICO MEDIO DE PAGO ES LA TARJETA INTELIGENTE PREPAGO | ILUSTRE MUNICIPIO DE LOJA BUSCA MEJORAR LOS SERVIVIOS PARA LA CIUDADANÍA ";
-    labelMensajes.setHtml('<marquee  style="bottom: 3px; top: 3px; " width="100%" height="90%" loop="-1" scrollamount="2"  ><font color="#083772" size="150"> </br><p width="100" height="100">' + mensajes + '</p> </font></marquee>');
+    labelMensajes.setHtml('<marquee  style="bottom: 3px; top: 3px; left: 3px; " width="100%" height="90%" loop="-1" scrollamount="2"  ><font color="#083772" size="150"> </br><p width="100" height="100">' + mensajes + '</p> </font></marquee>');
 }
 

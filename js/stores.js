@@ -33,7 +33,7 @@ $.ajax({
     dataType: 'text',
     success: recuperar,
     error: function () {
-        Ext.example.msg("Alerta", 'Problemas con el servidor');
+        Ext.example.msg("Alerta", 'No se ha conectado con el servidor');
 
     }
 });
