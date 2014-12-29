@@ -93,13 +93,13 @@ Ext.onReady(function () {
                         '<div class="navbar section" id="navbar"></div>' +
                         '<div class="margin">' +
                         '<div id="vplayer">' +
-                        '<video onclick="init()" controls="" height="410" id="video" preload="auto" tabindex="0" type="video/mp4" width="1200">' +
+                        '<video onclick="init()" controls="" height="410" id="video" preload="auto" tabindex="0"  loop="loop" type="video/mp4" width="1200">' +
                         '<source src="videos/noviembre_15_2014.mp4" type="video/mp4"></source>' +
                         'Hola, tu navegador no está actualizado y no puede mostrar este contenido.' +
                         '</video>' +
                         '</div>' +
                         '<ul id="vplaylist">' +
-                        '<li class="active"><a href="videos/noviembre_15_2014.mp4">1</a></li>' +
+                        '<li class="active"><a href="videos/noviembre_15_2014.mp4"  >1</a></li>' +
                         '<li><a href="videos/Sistema_de_Recaudo_Electr_nico_Tecnolog_a_en_Bus.mp4">Municipio</a></li>' +
                         '</ul>' +
                         '</div>'
