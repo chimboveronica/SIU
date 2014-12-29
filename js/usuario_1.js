@@ -6,6 +6,7 @@
 var panelSouth;
 var msgForNormal;
 var mensajes;
+var datos;
 var required = '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>';
 Ext.Loader.setConfig({
     enabled: true
@@ -142,6 +143,46 @@ Ext.onReady(function () {
     });
 
     ponerMensajes();
+    setTimeout(function () {
+        $.ajax({
+            type: 'GET',
+            url: 'http://190.12.61.30:5801/K-Bus/webresources/com.kradac.kbus.rest.entities.historic.informacionparadas/parada=6',
+            dataType: 'text',
+            success: recuperar,
+            error: function () {
+                Ext.example.msg("Alerta", 'No se ha conectado con el servidor');
+
+            }
+        });
+
+        function recuperar(ajaxResponse, textStatus)
+        {
+            datos = Ext.JSON.decode(ajaxResponse);
+            cargar();
+        }
+        ;
+        function cargar() {
+
+            storeBuses = Ext.create('Ext.data.Store', {
+                data: datos,
+                reader: {
+                    type: 'json',
+                    root: 'data'
+                },
+                proxy: {
+                    type: 'memory',
+                    reader: {
+                        type: 'json',
+                        root: 'data'
+                    }
+                },
+                fields: ['id', 'ruta', 'horaLlegada', 'horaArribo', 'regMunicipal']
+
+            });
+            console.log(datos);
+            console.log(storeBuses);
+        }
+    }, 5 * 1000);
 
 });
 
