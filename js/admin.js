@@ -9,7 +9,9 @@ var mensaje;
 var formMensaje;
 var id;
 var video;
+var storeGridMensajes;
 var idVideo;
+var idMensaje;
 var required = '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>';
 Ext.Loader.setConfig({
     enabled: true
@@ -38,7 +40,7 @@ Ext.require([
     'Ext.ux.Spotlight'
 ]);
 
-
+var gridMensaje;
 var labelMensaje = Ext.create('Ext.form.Label', {
     text: '',
     margin: '5 5 5 5',
@@ -63,13 +65,13 @@ Ext.onReady(function () {
                     {
                         padding: '2 2 2 2',
                         xtype: 'label',
-                        html: '<img src="img/ic_situ - copia.png" width="80" height="90">'
+                        html: '<img src="img/ic_situ - copia.png" width="80" height="50">'
                     },
                     {
                         padding: '15 10 10 15',
-                        height: 40,
+                        height: 20,
                         xtype: 'label',
-                        html: '<div id="encabezado">Sistema intermodal de<br><br> <b>TRANSPORTE URBANO</b><br>'
+                        html: '<div id="encabezado">Sistema intermodal de<b>TRANSPORTE URBANO</b>'
                     }
                 ]
             },
@@ -95,6 +97,8 @@ Ext.onReady(function () {
 
     var grid = Ext.create('Ext.grid.Panel', {
         height: '50%',
+                width: '100%',
+
         margins: '5 5 5 5',
         bodyStyle: 'padding: 10px; background-color: #DFE8F6',
         store: storeVideos,
@@ -103,8 +107,7 @@ Ext.onReady(function () {
             {header: "<b>Video</b>", width: 250, align: 'center', sortable: true, dataIndex: 'video', filter: {type: 'string'}},
         ],
         stripeRows: true,
-        width: '30%',
-        region: 'west',
+        region: 'south',
         title: 'Registro de Videos',
         listeners: {
             itemclick: function (thisObj, record, item, index, e, eOpts) {
@@ -117,10 +120,12 @@ Ext.onReady(function () {
             }}
     });
     var formVideo = Ext.create('Ext.form.Panel', {
-        region: 'center',
-        width: '30%',
+               region: 'north',
         title: 'Administración de Videos',
-        bodyStyle: 'padding: 10px; background-color: #DFE8F6',
+                width: '100%',
+
+                        height: '50%',
+
         style: {
             borderColor: '#cecece',
             borderStyle: 'solid',
@@ -128,6 +133,15 @@ Ext.onReady(function () {
             borderRightWidth: '10px',
             borderBottomWidth: '5px',
             borderLeftWidth: '10px'
+        },
+        bodyStyle: 'padding: 10px; background-color: #DFE8F6',
+        defaultType: 'textfield',
+        layout: 'anchor',
+        fieldDefaults: {
+            msgTarget: 'side'
+        },
+        defaults: {
+            anchor: '90%'
         },
         items: [
             {
@@ -253,10 +267,15 @@ Ext.onReady(function () {
 
         ]
     });
+
+
     formMensaje = Ext.create('Ext.form.Panel', {
-        region: 'east',
+        region: 'north',
+                width: '100%',
+
         title: 'Administración de Mensaje',
-        width: '40%',
+                        height: '50%',
+
         style: {
             borderColor: '#cecece',
             borderStyle: 'solid',
@@ -280,31 +299,34 @@ Ext.onReady(function () {
                 fieldLabel: 'Mensaje',
                 name: 'mensaje',
                 labelWidth: 95,
-                height: 200,
+                height: 100,
                 emptyText: 'Ingresar Mensaje...'
-            }, labelMensaje
+            },
+            
+             {
+                id: 'ordenM',
+                xtype: 'numberfield',
+                fieldLabel: 'Orden',
+                labelSeparator: '',
+                name: 'ordenM',
+                minValue: 0
+            },
         ],
-        dockedItems: [
+       dockedItems: [
             {
                 xtype: 'toolbar',
                 dock: 'bottom',
                 ui: 'footer',
                 items: ['->',
-                    {
-                        style: {
+                    {style: {
                             background: '#006dcc'
-                        },
-                        iconCls: 'icon-update',
-                        itemId: 'update',
-                        text: 'Actualizar',
-                        tooltip: 'Actualizar',
-                        handler: function () {
-                            var valor = formMensaje.down('[name=mensaje]').getValue();
-                            console.log(valor);
+                        }, iconCls: 'icon-updat', itemId: 'update', text: '<div id="botonesMenuForm">Crear</div>', scope: this, tooltip: '<div id="tooltip">Crear</div>', handler: function () {
+
                             Ext.Ajax.request({
-                                url: 'php/informacion/update.php',
+                                url: 'php/informacion/subir.php',
                                 params: {
-                                    mensaje: valor
+                                    mensaje: formMensaje.down('[name=mensaje]').getValue(),
+                                    orden: formMensaje.down('[name=ordenM]').getValue()
                                 },
                                 method: 'POST',
                                 failure: function (form, action) {
@@ -316,43 +338,98 @@ Ext.onReady(function () {
                                     });
                                 },
                                 success: function (form, action) {
-                                    storeInformacion.reload();
-                                    formMensaje.down('[name=mensaje]').setValue('');
-                                    labelMensaje.setHtml('Mensaje Actual:</br></br>' + '<marquee  style="bottom: 20px; " width="100%" height="50" loop="-1" scrollamount="2"  ><font color="#083772" size="90"> <p width="100" height="50">' + valor + '</p> </font></marquee>');
                                     Ext.example.msg("Mensaje", 'Datos insertados correctamente');
+                                     storeInformacion.reload();
+                                    formMensaje.getForm().reset();
                                 }
                             });
+                        }
+                    },
+                    {style: {
+                            background: '#006dcc'
+                        }, iconCls: 'icon-add', itemId: 'create', text: '<div id="botonesMenuForm">Eliminar Mensaje</div>', scope: this, tooltip: '<div id="tooltip">Eliminar</div>', handler: function () {
+                            Ext.Ajax.request({
+                                url: 'php/informacion/destroy.php',
+                                params: {
+                                    idMensaje: idMensaje
+                                },
+                                method: 'POST',
+                                failure: function (form, action) {
+                                    Ext.MessageBox.show({
+                                        title: 'Error...',
+                                        msg: 'No se pudo guardar',
+                                        buttons: Ext.MessageBox.ERROR,
+                                        icon: Ext.MessageBox.ERROR
+                                    });
+                                },
+                                success: function (form, action) {
+                                    Ext.example.msg("Mensaje", 'Datos eliminados correctamente');
+                                    storeInformacion.reload();
+                                    formMensaje.getForm().reset();
+
+                                }
+                            });
+                        }},
+                    {style: {
+                            background: '#006dcc'
+                        }, iconCls: 'limpiar', text: '<div id="botonesMenuForm">Limpiar</div>', tooltip: '<div id="tooltip">Limpiar Campos</div>', scope: this,
+                        handler: function () {
+                            formMensaje.getForm().reset();
                         }
                     }
                 ]
             }
-        ]
-    });
-    ponerMensaje();
 
-    var panelCentral = Ext.create('Ext.form.Panel', {
-        region: 'center',
-        layout: 'border',
-        bodyStyle: {
-            backgroundImage: 'url("img/img_principal - copia.png")'
-        },
-        items: [
-            formVideo, grid, formMensaje
         ]
     });
+
+    var gridInfo = Ext.create('Ext.grid.Panel', {
+        height: '50%',
+        margins: '5 5 5 5',
+        bodyStyle: 'padding: 10px; background-color: #DFE8F6',
+        store: storeInformacion,
+        columns: [
+            {header: "<b>Orden</b>", align: 'center', width: 90, sortable: true, dataIndex: 'orden'},
+            {header: "<b>Mensaje</b>", width: 250, align: 'center', sortable: true, dataIndex: 'mensaje', filter: {type: 'string'}},
+        ],
+        stripeRows: true,
+        width: '100%',
+        region: 'south',
+        title: 'Registro de Mensajes',
+        listeners: {
+            itemclick: function (thisObj, record, item, index, e, eOpts) {
+                idMensaje = record.get('id');
+                console.log(record.get('id'));
+                console.log(record.get('mensaje'));
+                console.log(record.get('orden'));
+                formMensaje.down('[name=ordenM]').setValue(record.get('orden'));
+                formMensaje.down('[name=mensaje]').setValue(record.get('mensaje'));
+            }}
+    });
+    
+
+    
+       var panelOeste = Ext.create('Ext.form.Panel', {
+        region: 'east',
+        width: '50%',
+        layout: 'border',
+        items: [formMensaje,gridInfo]});
+     var panelc = Ext.create('Ext.form.Panel', {
+        region: 'east',
+        width: '50%',
+        layout: 'border',
+        items: [ formVideo, grid]});
+    
+    
     Ext.create('Ext.container.Viewport', {
         layout: 'border',
         style: {
             background: '#cecece'
         },
         items: [
-            panelMenu, panelCentral]
+            panelMenu, panelOeste,panelc]
     });
 });
 
-function ponerMensaje() {
-    storeInformacion.reload();
-    id = storeInformacion.data.items[0].data.id;
-    mensaje = storeInformacion.data.items[0].data.mensaje;
-    labelMensaje.setHtml('Mensaje Actual:</br></br>' + '<marquee  style="bottom: 5px; " width="100%" height="100%" loop="-1" scrollamount="2"  ><font color="#083772" size="50"></br> <p width="100" height="150">' + mensaje + '</p> </font></marquee>');
-}
+
+

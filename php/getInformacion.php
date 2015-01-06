@@ -13,15 +13,16 @@ if (!$mysqli = getConectionDb()) {
     $mysqli->close();
 
     if ($result->num_rows > 0) {
-        $objJson = "{data: [";
+        $objJson = "data: [";
         while ($myrow = $result->fetch_assoc()) {
             $objJson .= "{"
                     . "id:" . $myrow["id_mensaje"] . ","
+                    . "orden:" . $myrow["orden"] . ","
                     . "mensaje:'" . utf8_encode($myrow["mensaje"]) . "'},";
         }
 
-        $objJson .="]}";
-        echo $objJson;
+        $objJson .="]";
+        echo "{success: true,$objJson}";
     } else {
         echo "{success:false, msg: 'No hay datos que obtener'}";
     }

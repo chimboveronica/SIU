@@ -5,20 +5,21 @@
  */
 var panelSouth;
 var msgForNormal;
-var mensajes;
-var datos;
+var mensajes='';
+  var formVideo ;
 var required = '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>';
 Ext.Loader.setConfig({
     enabled: true
 });
 var labelMensajes = Ext.create('Ext.form.Label', {
     text: '',
-    margin: '0 0 0 0',
-    height: '100',
+    margin: '5 5 5 5',
+    height: '100%',
     style: {
         color: 'black'
     }
 });
+
 Ext.Loader.setPath('Ext.ux', 'extjs-docs-5.0.0/extjs-build/build/examples/ux');
 Ext.require([
     'Ext.grid.*',
@@ -45,13 +46,13 @@ Ext.onReady(function () {
                     {
                         padding: '2 2 2 2',
                         xtype: 'label',
-                        html: '<img src="img/ic_situ - copia.png" width="60" height="60">'
+                        html: '<img src="img/ic_situ - copia.png" width="60" height="100%">'
                     },
                     {
                         padding: '15 2 2 320',
                         height: 15,
                         xtype: 'label',
-                        html: '<div id="encabezado">Sistema intermodal de <b>TRANSPORTE URBANO</b>'
+                        html: '<div id="encabezado"><b>Sistema intermodal de <b>Transporte Urbano</b>'
                     }
                 ]
             },
@@ -79,7 +80,7 @@ Ext.onReady(function () {
     });
 
 
-    var formVideo = Ext.create('Ext.form.Panel', {
+    formVideo = Ext.create('Ext.form.Panel', {
         region: 'center',
         margins: '10 10 10 10',
         items: [{
@@ -107,17 +108,9 @@ Ext.onReady(function () {
     });
     var panelSur = Ext.create('Ext.panel.Panel', {
         region: 'south',
-        height: '18%',
         bodyStyle: {
-            backgroundImage: 'url("img/img_principal - copia.png")'
-        },
-        style: {
-            borderColor: '#cecece',
-            borderStyle: 'solid',
-            borderTopWidth: '0px',
-            borderRightWidth: '0px',
-            borderBottomWidth: '0px',
-            borderLeftWidth: '0px'
+            backgroundImage: 'url("img/img_principal - copia.png")',
+            opacity: '4'
         },
         items: [labelMensajes]
     });
@@ -130,7 +123,7 @@ Ext.onReady(function () {
             opacity: '4'
         },
         items: [
-            formVideo, grid
+            formVideo, grid,
         ]
     });
     Ext.create('Ext.container.Viewport', {
@@ -141,9 +134,12 @@ Ext.onReady(function () {
         items: [
             panelMenu, panelCentral, panelSur]
     });
-
-    ponerMensajes();
+ 
+  
+    ponerMensajes(); 
+    
     setTimeout(function () {
+        var datos;
         $.ajax({
             type: 'GET',
             url: 'http://190.12.61.30:5801/K-Bus/webresources/com.kradac.kbus.rest.entities.historic.informacionparadas/parada=6',
@@ -151,43 +147,51 @@ Ext.onReady(function () {
             success: recuperar,
             error: function () {
                 Ext.example.msg("Alerta", 'No se ha conectado con el servidor');
-
             }
         });
 
         function recuperar(ajaxResponse, textStatus)
         {
             datos = Ext.JSON.decode(ajaxResponse);
+            console.log(datos);
+           
             cargar();
         }
         ;
         function cargar() {
-
-            storeBuses = Ext.create('Ext.data.Store', {
-                data: datos,
-                reader: {
-                    type: 'json',
-                    root: 'data'
-                },
-                proxy: {
-                    type: 'memory',
-                    reader: {
-                        type: 'json',
-                        root: 'data'
-                    }
-                },
-                fields: ['id', 'ruta', 'horaLlegada', 'horaArribo', 'regMunicipal']
-
-            });
-            console.log(datos);
-            console.log(storeBuses);
-        }
-    }, 5 * 1000);
+var data = [];
+    for (var i = 0; i < datos.data.length; i++) {
+//        console.log(datos.data[i].regMunicipal);
+        data.push({
+            id: datos.data[i].id, ruta: datos.data[i].ruta, horaLlegada: datos.data[i].horaLlegada, horaArribo: datos.data[i].horaArribo, regMunicipal: datos.data[i].regMunicipal
+        });
+    }
+//    console.log(data);
+    storeBuses.setData(data);
+}
+    }, 1 * 1000);
 
 });
 
 function ponerMensajes() {
-    mensajes = "EL ÚNICO MEDIO DE PAGO ES LA TARJETA INTELIGENTE PREPAGO | ILUSTRE MUNICIPIO DE LOJA BUSCA MEJORAR LOS SERVIVIOS PARA LA CIUDADANÍA ";
-    labelMensajes.setHtml('<marquee  style="bottom: 3px; top: 3px; left: 3px; " width="100%" height="90%" loop="-1" scrollamount="2"  ><font color="#083772" size="150"> </br><p width="100" height="100">' + mensajes + '</p> </font></marquee>');
+    formVideo.getForm().submit({
+        url: 'php/getInformacion.php',
+        method: 'POST',
+        failure: function (form, action) {
+            Ext.MessageBox.show({
+                title: 'Error...',
+                msg: 'No se pudo obtener',
+                buttons: Ext.MessageBox.ERROR,
+                icon: Ext.MessageBox.ERROR
+            });
+        },
+        success: function (form, action) {
+            for(var i=0; i<action.result.data.length; i++){
+            mensajes=mensajes+String(action.result.data[i].mensaje)+' ';
+            }
+           labelMensajes.setHtml('<marquee  style="bottom: 50px; top: 30px; left: 3px; " width="100%" height="90%" loop="-1" scrollamount="2"  ><p width="100" height="100"><font color="#083772" size="250"> </br>' + mensajes + '</font></p> </marquee></br></br></br>');
+        }
+    });
 }
+
 

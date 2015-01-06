@@ -2,6 +2,22 @@ var storeInformacion;
 var storeVideos;
 var storeBuses;
 var datos;
+ storeBuses = Ext.create('Ext.data.Store', {
+     data:[],
+        reader: {
+            type: 'json',
+            root: 'data'
+        },
+        proxy: {
+            type: 'memory',
+            reader: {
+                type: 'json',
+                root: 'data'
+            }
+        },
+        fields: ['id', 'ruta', 'horaLlegada', 'horaArribo', 'regMunicipal']
+
+    });
 storeVideos = Ext.create('Ext.data.JsonStore', {
     autoLoad: true,
     proxy: {
@@ -24,7 +40,7 @@ storeInformacion = Ext.create('Ext.data.JsonStore', {
             root: 'data'
         }
     },
-    fields: ['id', 'mensaje']
+    fields: ['id', 'orden', 'mensaje']
 });
 
 $.ajax({
@@ -45,23 +61,13 @@ function recuperar(ajaxResponse, textStatus)
 }
 ;
 function cargar() {
-
-    storeBuses = Ext.create('Ext.data.Store', {
-        data: datos,
-        reader: {
-            type: 'json',
-            root: 'data'
-        },
-        proxy: {
-            type: 'memory',
-            reader: {
-                type: 'json',
-                root: 'data'
-            }
-        },
-        fields: ['id', 'ruta', 'horaLlegada', 'horaArribo', 'regMunicipal']
-
-    });
-    console.log(datos);
-    console.log(storeBuses);
+var data = [];
+    for (var i = 0; i < datos.data.length; i++) {
+//        console.log(datos.data[i].regMunicipal);
+        data.push({
+            id: datos.data[i].id, ruta: datos.data[i].ruta, horaLlegada: datos.data[i].horaLlegada, horaArribo: datos.data[i].horaArribo, regMunicipal: datos.data[i].regMunicipal
+        });
+    }
+//    console.log(data);
+    storeBuses.setData(data);
 }

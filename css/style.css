@@ -48,3 +48,6 @@ and open the template in the editor.
     font-size: 15px;
     color: white;
 }
+body{
+    background-color: #000;
+}

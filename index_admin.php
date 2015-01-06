@@ -17,7 +17,7 @@
             <br>
             <br>
             <br>
-            <img src="img/logo.png" width="600"  height="600" alt="SIU">
+            <img src="img/logo.png" width="600"  height="500" alt="SIU">
         </div> <div>
             <form class="form-horizontal" action = "php/login/login.php" method = "post">
                 <div>

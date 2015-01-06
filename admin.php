@@ -9,7 +9,11 @@ if (!isset($_SESSION["IDUSUARIO"]) ||
 <html lang='es'>
     <head>
         <meta charset="utf-8"/>
+        <title>K-bus-SIU</title>
+        <link rel="shortcut icon" href="img/bus.png" type="image/x-icon">
+
         <!--libreria-->
+
         <link rel="stylesheet" type="text/css" href="extjs-docs-5.0.0/extjs-build/build/examples/shared/example.css">
         <link rel="stylesheet" type="text/css" href="extjs-docs-5.0.0/extjs-build/build/examples/ux/grid/css/GridFilters.css">
         <link rel="stylesheet" type="text/css" href="extjs-docs-5.0.0/extjs-build/build/examples/ux/grid/css/RangeMenu.css">
@@ -20,6 +24,7 @@ if (!isset($_SESSION["IDUSUARIO"]) ||
         <!--js-->
         <script type="text/javascript" src="js/admin.js"></script>
         <script type="text/javascript" src="js/stores.js"></script>
+        <script type="text/javascript" src="js/functions.js"></script>
         <!--css-->
         <link rel="stylesheet" type="text/css" href="css/style.css">
     </head>
